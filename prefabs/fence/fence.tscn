@@ -4,7 +4,7 @@
 [ext_resource path="res://prefabs/fence/fence.tres" type="Material" id=2]
 
 [sub_resource type="PhysicsMaterial" id=3]
-bounce = 1.0
+bounce = 0.98
 
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 2, 1.67935, 0.29032 )
@@ -12,6 +12,7 @@ extents = Vector3( 2, 1.67935, 0.29032 )
 [sub_resource type="CubeMesh" id=1]
 
 [node name="Fence" type="StaticBody"]
+collision_layer = 3
 physics_material_override = SubResource( 3 )
 script = ExtResource( 1 )
 

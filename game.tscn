@@ -4,7 +4,7 @@
 [ext_resource path="res://prefabs/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://prefabs/wheat/wheat.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/fence/fence.tscn" type="PackedScene" id=4]
-[ext_resource path="res://audio/103bpm.mp3" type="AudioStream" id=5]
+[ext_resource path="res://audio/103bpm_music.mp3" type="AudioStream" id=5]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -48,6 +48,10 @@ visible = false
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
+movement_speed = 15.0
+dash_speed = 40.0
+dash_duration = 0.15
+dash_interval = 0.1
 camera = NodePath("../Camera")
 
 [node name="Field" type="Spatial" parent="."]
@@ -228,4 +232,3 @@ mesh = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
-autoplay = true

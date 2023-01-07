@@ -3,7 +3,7 @@ extends KinematicBody
 export(float) var movement_speed: float = 15.0
 export(float) var dash_speed: float = 40.0
 export(float) var dash_duration: float = 0.15
-export(float) var dash_interval: float = 0.3
+export(float) var dash_interval: float = 0.1
 export(float) var sickle_impulse: float = 30.0
 export(NodePath) var camera: NodePath
 export(PackedScene) var sickle: PackedScene
@@ -12,6 +12,8 @@ var _view_target: Vector3
 var _prev_direction: Vector3
 var _remaining_dash: float = -dash_interval
 var _sickle: RigidBody
+var _jumping: bool = false
+var _throwing: bool = false
 
 onready var _camera: Camera = get_node(camera)
 onready var _socket: Spatial = $Socket
@@ -19,6 +21,8 @@ onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3");
 onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3");
+
+onready var _game: Game = get_tree().get_current_scene()
 
 func _ready():
 	_update_view_target(get_viewport().get_mouse_position())
@@ -28,16 +32,34 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		_update_view_target(event.position)
 	elif event.is_action_pressed("dash"):
+		if _jumping:
+			return
+
 		if _remaining_dash <= -dash_interval:
+			_jumping = true
+
+			var action = _game.delay_action(0.1)
+			if action is GDScriptFunctionState:
+				yield(action, "completed")
+
 			_play_sound(_sound_dash)
 			_remaining_dash = dash_duration
 			if is_zero_approx(_prev_direction.length_squared()):
 				_prev_direction = (_view_target - self.transform.origin).normalized()
 			else:
 				_prev_direction = _prev_direction.normalized()
+			_jumping = false
 	elif event.is_action_pressed("throw"):
+		if _throwing:
+			return
+		_throwing = true
+
 		if _sickle != null:
 			_sickle.queue_free()
+
+		var action = _game.delay_action()
+		if action is GDScriptFunctionState:
+			yield(action, "completed")
 
 		_play_sound(_sound_throw)
 
@@ -47,6 +69,7 @@ func _input(event):
 
 		var impulse_direction = (_view_target - self.transform.origin).normalized()
 		_sickle.apply_impulse(Vector3.ZERO, impulse_direction.normalized() * sickle_impulse)
+		_throwing = false
 
 
 func _process(_delta):
