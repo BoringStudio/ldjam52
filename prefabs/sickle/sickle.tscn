@@ -13,7 +13,8 @@ bottom_radius = 0.4
 height = 0.2
 
 [node name="Sickle" type="RigidBody"]
-collision_layer = 3
+collision_layer = 2
+collision_mask = 2
 contacts_reported = 2
 contact_monitor = true
 axis_lock_angular_x = true
