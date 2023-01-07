@@ -32,3 +32,6 @@ mesh = SubResource( 3 )
 
 [node name="Socket" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.880403, 1.61617, -0.609905 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+unit_size = 20.0

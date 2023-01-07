@@ -1,8 +1,8 @@
 extends KinematicBody
 
 export(float) var movement_speed: float = 15.0
-export(float) var dash_speed: float = 50.0
-export(float) var dash_duration: float = 0.1
+export(float) var dash_speed: float = 40.0
+export(float) var dash_duration: float = 0.15
 export(float) var dash_interval: float = 0.3
 export(float) var sickle_impulse: float = 30.0
 export(NodePath) var camera: NodePath
@@ -15,6 +15,10 @@ var _sickle: RigidBody
 
 onready var _camera: Camera = get_node(camera)
 onready var _socket: Spatial = $Socket
+onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
+
+onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3");
+onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3");
 
 func _ready():
 	_update_view_target(get_viewport().get_mouse_position())
@@ -25,16 +29,17 @@ func _input(event):
 		_update_view_target(event.position)
 	elif event.is_action_pressed("dash"):
 		if _remaining_dash <= -dash_interval:
+			_play_sound(_sound_dash)
 			_remaining_dash = dash_duration
 			if is_zero_approx(_prev_direction.length_squared()):
 				_prev_direction = (_view_target - self.transform.origin).normalized()
 			else:
 				_prev_direction = _prev_direction.normalized()
 	elif event.is_action_pressed("throw"):
-		print("ASDASD")
-		#if _sickle == null:
 		if _sickle != null:
 			_sickle.queue_free()
+
+		_play_sound(_sound_throw)
 
 		_sickle = sickle.instance()
 		_sickle.transform.origin = _socket.global_transform.origin
@@ -66,6 +71,15 @@ func _physics_process(delta):
 		_prev_direction = direction
 
 		var _vel = self.move_and_slide(direction)
+
+
+func _play_sound(sound: AudioStream):
+	var audio = _audio.duplicate(DUPLICATE_USE_INSTANCING)
+	self.add_child(audio)
+	audio.stream = sound
+	audio.play()
+	yield(audio, "finished")
+	audio.queue_free()
 
 
 func _get_direction():

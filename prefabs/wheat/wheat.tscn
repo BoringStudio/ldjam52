@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://prefabs/wheat/wheat.gd" type="Script" id=1]
+[ext_resource path="res://audio/wheat.ogg" type="AudioStream" id=2]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -120,5 +121,13 @@ skeleton = NodePath("../..")
 transform = Transform( 0.00987107, 0.0426886, -0.071162, 0.00121931, 0.527863, 0.00603799, 0.0703857, -0.0151311, 0.00987534, -0.188043, 0.252681, 0.671304 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.73, 0 )
+stream = ExtResource( 2 )
+unit_db = 1.0
+unit_size = 2.0
+max_distance = 200.0
+attenuation_filter_db = -0.1
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

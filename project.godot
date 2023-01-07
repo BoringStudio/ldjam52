@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "StaticBody",
+"class": "Obstacle",
+"language": "GDScript",
+"path": "res://shared/obstacle.gd"
+} ]
+_global_script_class_icons={
+"Obstacle": ""
+}
+
 [application]
 
 config/name="ldjam52"

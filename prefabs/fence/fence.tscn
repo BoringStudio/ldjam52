@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://prefabs/fence/fence.gd" type="Script" id=1]
+[ext_resource path="res://prefabs/fence/fence.tres" type="Material" id=2]
+
+[sub_resource type="PhysicsMaterial" id=3]
+bounce = 1.0
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 2, 1.67935, 0.29032 )
+
+[sub_resource type="CubeMesh" id=1]
+
+[node name="Fence" type="StaticBody"]
+physics_material_override = SubResource( 3 )
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00977302, 1.36728, -0.00438225 )
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.250637, -0.0358189, 0, 0.00832763, 1.07804, 0, 0, 0, 0.240093, -1.73465, 0.95144, -0.00375128 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 0.178525, 0.0446476, 0, -0.00781953, 1.01933, 0, 0, 0, 0.209965, 1.8083, 0.924727, -0.0193013 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 0.0056464, -1.71571, 0, 0.104562, 0.092649, 0, 0, 0, 0.119533, -0.045868, 1.43135, 0.000159591 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="."]
+transform = Transform( -0.00657642, -1.73213, 0, 0.11145, -0.10221, 0, 0, 0, 0.109414, -0.00820555, 0.507073, 0.000159591 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )

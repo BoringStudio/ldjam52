@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/hit_wood.mp3-c770299ccb4b95602a7f5df59711c457.mp3str"
+
+[deps]
+
+source_file="res://audio/hit_wood.mp3"
+dest_files=[ "res://.import/hit_wood.mp3-c770299ccb4b95602a7f5df59711c457.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
