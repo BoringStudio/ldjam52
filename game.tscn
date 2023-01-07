@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://game.gd" type="Script" id=1]
+[ext_resource path="res://prefabs/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/wheat/wheat.tscn" type="PackedScene" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 40, 0.2, 40 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 40, 0.4, 40 )
+
+[node name="Root" type="Spatial"]
+script = ExtResource( 1 )
+wheat = ExtResource( 3 )
+cell_size = 2.0
+
+[node name="Floor" type="Spatial" parent="."]
+
+[node name="StaticBody" type="StaticBody" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
+collision_layer = 2
+physics_material_override = SubResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor/StaticBody"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Floor/StaticBody"]
+mesh = SubResource( 3 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.594683, 0.803961, 0, -0.803961, 0.594683, 0, 17.5833, 17.4985 )
+
+[node name="Sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.841963, 0.454746, 0.290353, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
+visible = false
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+camera = NodePath("../Camera")
+
+[node name="Field" type="Spatial" parent="."]

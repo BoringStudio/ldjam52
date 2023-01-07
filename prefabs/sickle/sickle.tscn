@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://prefabs/sickle/sickle.tres" type="Material" id=1]
+[ext_resource path="res://prefabs/sickle/sickle.gd" type="Script" id=2]
+
+[sub_resource type="CylinderShape" id=1]
+height = 0.2
+radius = 0.4
+
+[sub_resource type="CylinderMesh" id=2]
+top_radius = 0.4
+bottom_radius = 0.4
+height = 0.2
+
+[node name="Sickle" type="RigidBody"]
+collision_layer = 3
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 2 )
+material/0 = ExtResource( 1 )
