@@ -2,7 +2,7 @@ extends Obstacle
 
 const ObstacleType = preload("../../shared/obstacle_type.gd").ObstacleType
 
-func _init().(randi() % 4):
+func _init().(ObstacleType.Wood):
 	pass
 
 func _ready():

@@ -7,15 +7,20 @@ enum ThrowState {
 	Thrown = 3,
 }
 
+enum OverlapState {
+	None,
+	Waiting,
+	Hit,
+}
+
 export(float) var movement_speed: float = 15.0
 export(float) var shift_speed: float = 25.0
 export(float) var dash_speed: float = 40.0
 export(float) var dash_duration: float = 0.15
 export(float) var dash_interval: float = 0.1
 export(float) var ricochet_velocity: float = 15.0
-export(float) var min_sickle_impulse: float = 40.0
 export(float) var max_sickle_impulse: float = 40.0
-export(float) var margin: float = 0.1
+export(float) var margin: float = 0.15
 export(NodePath) var camera: NodePath
 export(PackedScene) var sickle: PackedScene
 
@@ -23,10 +28,10 @@ var _view_target: Vector3
 var _prev_direction: Vector3
 var _remaining_dash: float = -dash_interval
 var _sickle: Sickle
-var _overlaps_sickle: bool = false
 var _jumping: bool = false
 var _shift: bool = false
 var _throw_state: int = ThrowState.None
+var _overlap_state: int = OverlapState.None
 var _time_since_prepare: float = 0.0
 var _time_since_overlap: float = 0.0
 
@@ -34,9 +39,10 @@ onready var _camera: Camera = get_node(camera)
 onready var _socket: Spatial = $Socket
 onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
-onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3");
-onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3");
-onready var _prepared_force_indicator: Spatial = $MeshInstance3
+onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3")
+onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3")
+onready var _sound_damange: AudioStream = preload("../../audio/hit_player.mp3")
+onready var _sound_bounce: AudioStream = preload("../../audio/hit_wall.mp3")
 
 onready var _game: Game = get_tree().get_current_scene()
 
@@ -54,7 +60,7 @@ func _input(event):
 		if _remaining_dash <= -dash_interval:
 			_jumping = true
 
-			var action = _game.delay_action(0.1)
+			var action = _game.delay_action(0.1, 2)
 			if action is GDScriptFunctionState:
 				yield(action, "completed")
 
@@ -71,70 +77,23 @@ func _input(event):
 		if _throw_state != ThrowState.None:
 			return
 
-		if _time_since_overlap < margin:
-			_throw_sickle()
-
-		# if (_time_since_overlap < 0.2 and _throw_state != ThrowState.Throwing and _throw_state != ThrowState.Thrown
-		# 	and _prev_sickle_velocity.length_squared() > ricochet_velocity * ricochet_velocity):
-		# 	var impulse_direction = _get_view_direction()
-		# 	_sickle.linear_velocity = _prev_sickle_velocity.bounce(impulse_direction)
-		# 	play_sound()
-		# 	_throw_state = ThrowState.Thrown
-		# else:
-		#_throw_state = ThrowState.Preparing
-		#_prepared_force = 0.0
-	# elif event.is_action_released("throw"):
-	# 	if _throw_state == ThrowState.Throwing or _throw_state == ThrowState.Thrown:
-	# 		return
-
-	# 	if not _overlaps_sickle and is_instance_valid(_sickle):
-	# 		_throw_state = ThrowState.None
-	# 		return
-
-	# 	_throw_state = ThrowState.Throwing
-
-	# 	# var action = _game.delay_action()
-	# 	# if action is GDScriptFunctionState:
-	# 	# 	yield(action, "completed")
-
-	# 	_play_sound(_sound_throw)
-
-	# 	if _sickle == null:
-	# 		_sickle = sickle.instance()
-	# 		get_tree().root.add_child(_sickle)
-	# 	_sickle.global_transform.origin = _socket.global_transform.origin
-
-	# 	var impulse_direction = _get_view_direction()
-	# 	var impulse = lerp(min_sickle_impulse, max_sickle_impulse, min(_prepared_force, 1.0));
-
-	# 	# if _time_since_overlap < 0.2 && _prev_sickle_velocity.length_squared() > ricochet_velocity * ricochet_velocity:
-	# 	# 	_sickle.linear_velocity = _prev_sickle_velocity.bounce(impulse_direction)
-	# 	# 	play_sound()
-	# 	# else:
-	# 	_sickle.linear_velocity = Vector3.ZERO
-	# 	_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
-
-	# 	_sickle.reset_bounces(1)
-
-	# 	_throw_state = ThrowState.Thrown
+		_throw_sickle(_time_since_overlap < margin)
 
 
 func _process(_delta):
 	self.transform = self.transform.looking_at(_view_target, Vector3.UP)
 
 func _physics_process(delta):
-	if not _overlaps_sickle and _throw_state == ThrowState.Preparing:
-		_time_since_prepare += delta
-	elif _overlaps_sickle and _throw_state == ThrowState.None:
+	if _overlap_state == OverlapState.Waiting and _throw_state == ThrowState.None:
 		_time_since_overlap += delta
+		if _time_since_overlap > margin:
+			_overlap_state = OverlapState.Hit
+			if _sickle_has_critical_velocity():
+				_play_sound(_sound_damange)
+	elif _overlap_state == OverlapState.None and _throw_state == ThrowState.Preparing and _time_since_prepare < margin:
+		_time_since_prepare += delta
 
-	if is_instance_valid(_sickle) and _overlaps_sickle and _time_since_overlap > margin and _throw_state == ThrowState.None:
-		#play_sound()
-		_sickle.linear_velocity = Vector3.ZERO
-
-	# _update_prepared_force_indicator()
-
-	if is_instance_valid(_sickle) and _sickle.should_retract() and not _overlaps_sickle and _throw_state == ThrowState.None:
+	if is_instance_valid(_sickle) and _sickle.should_retract() and _overlap_state == OverlapState.None and _throw_state == ThrowState.None:
 		var sickle_to_player = self.global_transform.origin - _sickle.global_transform.origin
 		sickle_to_player.y = 0.0
 		_sickle.add_central_force(sickle_to_player.normalized() * 50)
@@ -193,42 +152,32 @@ func _update_view_target(mouse_position: Vector2):
 	_view_target = camera_from + t * camera_to
 
 
-# func _update_prepared_force_indicator():
-# 	if _throw_state == ThrowState.Preparing:
-# 		_prepared_force_indicator.visible = true
-# 		_prepared_force_indicator.scale = Vector3.ONE * _prepared_force
-# 	else:
-# 		_prepared_force_indicator.visible = false
-
-
 func _on_sickle_entered(body: Node):
 	if is_instance_valid(_sickle) and body == _sickle:
-		if not _overlaps_sickle:
-			_overlaps_sickle = true
+		if _overlap_state == OverlapState.None:
 			if _throw_state == ThrowState.None:
+				_overlap_state = OverlapState.Waiting
 				_time_since_overlap = 0.0
 			elif _throw_state == ThrowState.Preparing:
+				_overlap_state = OverlapState.Hit
 				if _time_since_prepare < margin:
-					_throw_sickle()
+					_throw_sickle(true)
 				else:
-					play_sound()
-					_sickle.linear_velocity = Vector3.ZERO
+					_play_sound(_sound_damange)
+					_throw_sickle(false)
 
 
 func _on_sickle_exited(body: Node):
 	if is_instance_valid(_sickle) and body == _sickle:
-		if _overlaps_sickle and _throw_state == ThrowState.Preparing:
-			return
-
-		_overlaps_sickle = false
+		_overlap_state = OverlapState.None
 		_throw_state = ThrowState.None
 
 
-func _throw_sickle():
+func _throw_sickle(bounce: bool):
 	if _throw_state == ThrowState.Throwing or _throw_state == ThrowState.Thrown:
 		return
 
-	if not _overlaps_sickle and is_instance_valid(_sickle):
+	if _overlap_state == OverlapState.None and is_instance_valid(_sickle):
 		_throw_state = ThrowState.None
 		return
 
@@ -243,17 +192,21 @@ func _throw_sickle():
 	if _sickle == null:
 		_sickle = sickle.instance()
 		get_tree().root.add_child(_sickle)
-	_sickle.global_transform.origin = _socket.global_transform.origin
+		bounce = false
+
+	if not bounce:
+		_sickle.linear_velocity = Vector3.ZERO
+		_sickle.global_transform.origin = _socket.global_transform.origin
 
 	var impulse_direction = _get_view_direction()
 	var impulse = max_sickle_impulse;
 
-	# if _time_since_overlap < 0.2 && _prev_sickle_velocity.length_squared() > ricochet_velocity * ricochet_velocity:
-	# 	_sickle.linear_velocity = _prev_sickle_velocity.bounce(impulse_direction)
-	# 	play_sound()
-	# else:
-	_sickle.linear_velocity = Vector3.ZERO
-	_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
+	if _sickle_has_critical_velocity():
+		_sickle.linear_velocity = _sickle.linear_velocity.bounce(impulse_direction)
+		_play_sound(_sound_bounce)
+	else:
+		_sickle.linear_velocity = Vector3.ZERO
+		_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
 
 	_sickle.reset_bounces(1)
 
@@ -262,13 +215,5 @@ func _throw_sickle():
 	_time_since_overlap = 0.0
 
 
-func play_sound():
-	var audio = AudioStreamPlayer3D.new()
-	self.add_child(audio)
-	audio.stream = preload("../../audio/hit_wall.mp3")
-	audio.max_distance = 200
-	audio.unit_size = 20
-	audio.attenuation_filter_db = -0.1
-	audio.play()
-	yield(audio, "finished")
-	audio.queue_free()
+func _sickle_has_critical_velocity() -> bool:
+	return is_instance_valid(_sickle) and _sickle.linear_velocity.length_squared() > ricochet_velocity * ricochet_velocity

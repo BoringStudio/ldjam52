@@ -13,7 +13,7 @@ onready var _max_velocity_squared = max_velocity * max_velocity
 
 
 func set_collision_disabled(collision_disabled: bool):
-	_collision_shape.disabled = collision_disabled
+	self.set_collision_mask_bit(2, not collision_disabled)
 
 
 func reset_bounces(amount: int):

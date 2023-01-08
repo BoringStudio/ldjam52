@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://prefabs/player/player.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/sickle/sickle.tscn" type="PackedScene" id=2]
@@ -8,10 +8,6 @@
 [sub_resource type="CapsuleMesh" id=2]
 
 [sub_resource type="CubeMesh" id=3]
-
-[sub_resource type="CapsuleMesh" id=4]
-radius = 0.5
-mid_height = 0.001
 
 [sub_resource type="CylinderShape" id=5]
 height = 4.168
@@ -38,10 +34,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.880403, 1.61617, -0.609905 )
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 unit_size = 20.0
-
-[node name="MeshInstance3" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.19222, 0 )
-mesh = SubResource( 4 )
 
 [node name="Area" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.86372, 0 )
