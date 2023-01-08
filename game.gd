@@ -7,15 +7,21 @@ export(int) var height = 20
 export(float) var cell_size = 1.0
 export(int) var bpm = 103
 export(float) var max_bit_offset = 0.1
+export(float) var score_per_wheat = 10.0
+export(float) var timeout = 120.0
 
 var song_position: float = 0 setget , _get_song_position
 onready var beat_period: float = 60.0 / bpm
 
 var _start_timestamp: int = 0
 var _start_delay: float = 0
+var _score: float = 0
+var _min_score: float = width * height * score_per_wheat
 
 onready var _field = $Field
 onready var _music = $AudioStreamPlayer
+onready var _progress_bar = $GUI/ProgressBarRoot/ProgressBar
+onready var _time_label = $GUI/CenterContainer/Timer
 
 func _ready():
 	var top_left = Vector3(-width * cell_size / 2.0, 0, -height * cell_size / 2.0)
@@ -38,6 +44,25 @@ func delay_action(shift: float = 0.0, period_div: float = 1.0):
 
 func is_in_rhythm(shift: float = 0.0, period_div: float = 1.0, margin: float = 0.1) -> bool:
 	return _compute_song_offset(shift, period_div) < margin
+
+
+func add_wheat_score():
+	_add_score(score_per_wheat)
+
+
+func _add_score(score_to_add: int):
+	_score += score_to_add
+	_progress_bar.value = 100.0 * _score / _min_score
+
+
+func _physics_process(_delta):
+	var offset = _get_song_position()
+	var diff = timeout - offset
+	if diff < 0:
+		_time_label.text = "game over"
+	else:
+		var seconds = int(diff)
+		_time_label.text = "%02d:%02d" % [(seconds / 60), (seconds % 60)]
 
 
 func _compute_song_offset(shift: float, period_div: float) -> float:

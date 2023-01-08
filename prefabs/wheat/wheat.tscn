@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://prefabs/wheat/wheat.gd" type="Script" id=1]
 [ext_resource path="res://audio/wheat.ogg" type="AudioStream" id=2]
@@ -6,6 +6,24 @@
 [sub_resource type="BoxShape" id=1]
 
 [sub_resource type="CubeMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+params_diffuse_mode = 4
+params_specular_mode = 4
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3( 0, 1, 0 )
+initial_velocity = 2.0
+scale = 0.1
+color = Color( 0.996078, 1, 0.458824, 1 )
+
+[sub_resource type="QuadMesh" id=5]
 
 [node name="Wheat" type="Area"]
 collision_layer = 5
@@ -129,5 +147,16 @@ unit_db = 1.0
 unit_size = 2.0
 max_distance = 200.0
 attenuation_filter_db = -0.1
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23565, 0 )
+material_override = SubResource( 3 )
+cast_shadow = 0
+emitting = false
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB( -1, -1.17188, -1, 2, 2.34376, 2 )
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 5 )
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -43,7 +43,7 @@ func _process(_delta):
 		var ring = _rings[(elapsed_beats + i) % self.ring_count]
 		var radius = min_radius + i * self._radius_step + (remaining * remaining) * self._radius_step
 		var thickness = 0.1 / radius
-		if i == 0 and _game.is_in_rhythm():
+		if i == 0 and _game.is_in_rhythm(0.0, 1.0, 0.2):
 			thickness = 1.0
 
 		_set_ring_props(ring, radius, thickness, (float(self.ring_count) - float(i) - remaining) / float(self.ring_count))

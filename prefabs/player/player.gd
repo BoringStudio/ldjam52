@@ -21,7 +21,7 @@ export(float) var dash_interval: float = 0.1
 export(float) var ricochet_velocity: float = 15.0
 export(float) var max_sickle_impulse: float = 40.0
 export(float) var margin: float = 0.15
-export(NodePath) var camera: NodePath
+export(float) var rhythm_margin: float = 0.2
 export(PackedScene) var sickle: PackedScene
 
 var _view_target: Vector3
@@ -35,9 +35,10 @@ var _overlap_state: int = OverlapState.None
 var _time_since_prepare: float = 0.0
 var _time_since_overlap: float = 0.0
 
-onready var _camera: Camera = get_node(camera)
+onready var _camera: Camera = get_viewport().get_camera()
 onready var _socket: Spatial = $Socket
 onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
+onready var _blood_particles: Particles = $Blood
 
 onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3")
 onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3")
@@ -78,27 +79,29 @@ func _input(event):
 		if _throw_state != ThrowState.None:
 			return
 
+		_play_sound(_sound_throw)
 		_throw_sickle(_time_since_overlap < margin)
 
 
-func _process(_delta):
-	self.transform = self.transform.looking_at(_view_target, Vector3.UP)
+func _process(delta):
+	var forward = -_get_view_direction();
+	var right = Vector3.UP.cross(forward)
+	self.transform.basis.x = right
+	self.transform.basis.z = forward
 
-
-func _physics_process(delta):
 	if _overlap_state == OverlapState.Waiting and _throw_state == ThrowState.None:
 		_time_since_overlap += delta
 		if _time_since_overlap > margin:
 			_overlap_state = OverlapState.Hit
 			if _sickle_has_critical_velocity():
-				_play_sound(_sound_damange)
+				_take_damage()
 	elif _overlap_state == OverlapState.None and _throw_state == ThrowState.Preparing and _time_since_prepare < margin:
 		_time_since_prepare += delta
 
 	if is_instance_valid(_sickle) and _overlap_state == OverlapState.None and _throw_state == ThrowState.None:
 		var sickle_to_player = self.global_transform.origin - _sickle.global_transform.origin
 		sickle_to_player.y = 0.0
-		_sickle.add_central_force(sickle_to_player.normalized() * 50)
+		_sickle.add_central_force(sickle_to_player.normalized() * (50 if _sickle.should_retract() else 30))
 
 	if _remaining_dash > 0.001:
 		var _vel = self.move_and_slide(_prev_direction * dash_speed)
@@ -165,7 +168,7 @@ func _on_sickle_entered(body: Node):
 				if _time_since_prepare < margin:
 					_throw_sickle(true)
 				else:
-					_play_sound(_sound_damange)
+					_take_damage()
 					_throw_sickle(false)
 
 
@@ -204,19 +207,30 @@ func _throw_sickle(bounce: bool):
 	var impulse = max_sickle_impulse;
 
 	if _sickle_has_critical_velocity():
-		_sickle.linear_velocity = _sickle.linear_velocity.bounce(impulse_direction)
+		#_sickle.linear_velocity = _sickle.linear_velocity.bounce(impulse_direction)
+		_sickle.linear_velocity = impulse_direction * max(_sickle.linear_velocity.length(), max_sickle_impulse)
 		_play_sound(_sound_bounce)
-		if _game.is_in_rhythm():
-			_play_sound(_sound_rhythm_bounce)
 	else:
 		_sickle.linear_velocity = Vector3.ZERO
 		_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
+
+	if _game.is_in_rhythm(0.0, 1.0, rhythm_margin):
+		_play_sound(_sound_rhythm_bounce)
 
 	_sickle.reset_bounces(1)
 
 	_throw_state = ThrowState.Thrown
 	_time_since_prepare = 0.0
 	_time_since_overlap = 0.0
+
+
+func _take_damage():
+	_play_sound(_sound_damange)
+	var particles = _blood_particles.duplicate(DUPLICATE_USE_INSTANCING)
+	self.add_child(particles)
+	particles.emitting = true
+	yield(get_tree().create_timer(0.2), "timeout")
+	particles.queue_free()
 
 
 func _sickle_has_critical_velocity() -> bool:

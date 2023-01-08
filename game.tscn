@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://prefabs/wheat/wheat.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/fence/fence.tscn" type="PackedScene" id=4]
 [ext_resource path="res://audio/103bpm_music.mp3" type="AudioStream" id=5]
+[ext_resource path="res://fonts/Purple Smile.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://prefabs/camera/camera.tscn" type="PackedScene" id=7]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -20,6 +22,28 @@ albedo_color = Color( 0.592157, 0.823529, 0.478431, 1 )
 [sub_resource type="PlaneMesh" id=4]
 material = SubResource( 5 )
 size = Vector2( 100, 100 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.243137, 0.223529, 0.286275, 1 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 20
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.545098, 0.792157, 0.45098, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.145098, 0.133333, 0.168627, 1 )
+border_color = Color( 0.243137, 0.223529, 0.286275, 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 45
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 6 )
 
 [node name="Root" type="Spatial"]
 script = ExtResource( 1 )
@@ -39,16 +63,18 @@ shape = SubResource( 2 )
 [node name="MeshInstance" type="MeshInstance" parent="Floor/StaticBody"]
 mesh = SubResource( 3 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.399902, 0.916558, 0, -0.916558, 0.399902, 0, 24.4896, 15.9259 )
-
 [node name="Sun" type="DirectionalLight" parent="."]
 transform = Transform( 0.841963, 0.454746, 0.290353, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
 visible = false
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-camera = NodePath("../Camera")
+
+[node name="Camera" parent="." instance=ExtResource( 7 )]
+translate_speed = 0.5
+target = NodePath("../Player")
+camera_distance = 30.0
+angle = 30.0
 
 [node name="Field" type="Spatial" parent="."]
 
@@ -229,3 +255,38 @@ mesh = SubResource( 4 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -32.547
+
+[node name="GUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ProgressBarRoot" type="Panel" parent="GUI"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -50.0
+custom_styles/panel = SubResource( 9 )
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/ProgressBarRoot"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+custom_fonts/font = SubResource( 10 )
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
+value = 50.0
+
+[node name="CenterContainer" type="CenterContainer" parent="GUI"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+
+[node name="Timer" type="Label" parent="GUI/CenterContainer"]
+margin_left = 487.0
+margin_top = 117.0
+margin_right = 536.0
+margin_bottom = 182.0
+custom_fonts/font = SubResource( 6 )
+text = "60"
