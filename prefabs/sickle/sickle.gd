@@ -6,6 +6,7 @@ export(float) var max_velocity = 30.0
 var _colliding = false
 var _last: Node
 var _remaining_bounces: int = 0;
+var _spin_fast: bool = false
 
 onready var _game: Game = get_tree().get_current_scene()
 onready var _collision_shape: CollisionShape = $CollisionShape
@@ -24,11 +25,6 @@ func should_retract() -> bool:
 	return _remaining_bounces == 0
 
 
-#func _physics_process(_delta):
-	#if self.linear_velocity.length_squared() > _max_velocity_squared:
-	# 	self.linear_velocity = self.linear_velocity.normalized() * max_velocity
-
-
 func _on_body_entered(body):
 	if _colliding:
 		return
@@ -45,9 +41,11 @@ func _on_body_entered(body):
 		if action is GDScriptFunctionState:
 			var velocity = self.linear_velocity
 			self.linear_velocity = Vector3.ZERO
+			self._spin_fast = true
 			yield(action, "completed")
 			self.linear_velocity = velocity
 
+		_spin_fast = false
 		body.play_sound()
 
 		_colliding = false
@@ -56,3 +54,5 @@ func _on_body_entered(body):
 func _integrate_forces(state):
 	var clamped_velocity = min(max_velocity, state.linear_velocity.length())
 	state.linear_velocity = state.linear_velocity.normalized() * clamped_velocity
+
+	state.angular_velocity = Vector3(0, 50 if _spin_fast else 20, 0)

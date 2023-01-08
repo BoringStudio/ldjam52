@@ -1,10 +1,11 @@
 extends Spatial
 class_name BeatIndicator
 
-export(int) var ring_count: int = 3
+export(int) var ring_count: int = 1
 export(float) var min_radius: float = 0.3
 export(float) var max_radius: float = 2.0
-export(float) var beat_range: float = 0.9
+export(float) var beat_range: float = 1.0
+export(int) var nth_beat = 5;
 
 var _rings: Array = []
 
@@ -33,7 +34,7 @@ func _ready():
 
 func _process(_delta):
 	var song_position = _game.song_position
-	var beat_period = _game.beat_period * 2
+	var beat_period = _game.beat_period
 	song_position += beat_period * (1.0 - beat_range)
 	var elapsed_beats = int(song_position / beat_period)
 	var remaining = ((elapsed_beats + 1) * beat_period - song_position) / beat_period
@@ -42,7 +43,7 @@ func _process(_delta):
 		var ring = _rings[(elapsed_beats + i) % self.ring_count]
 		var radius = min_radius + i * self._radius_step + (remaining * remaining) * self._radius_step
 		var thickness = 0.1 / radius
-		if i == 0:
+		if i == 0 and _game.is_in_rhythm():
 			thickness = 1.0
 
 		_set_ring_props(ring, radius, thickness, (float(self.ring_count) - float(i) - remaining) / float(self.ring_count))

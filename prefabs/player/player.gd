@@ -43,6 +43,7 @@ onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3")
 onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3")
 onready var _sound_damange: AudioStream = preload("../../audio/hit_player.mp3")
 onready var _sound_bounce: AudioStream = preload("../../audio/hit_wall.mp3")
+onready var _sound_rhythm_bounce: AudioStream = preload("../../audio/rhythm_bounce.mp3")
 
 onready var _game: Game = get_tree().get_current_scene()
 
@@ -83,6 +84,7 @@ func _input(event):
 func _process(_delta):
 	self.transform = self.transform.looking_at(_view_target, Vector3.UP)
 
+
 func _physics_process(delta):
 	if _overlap_state == OverlapState.Waiting and _throw_state == ThrowState.None:
 		_time_since_overlap += delta
@@ -93,7 +95,7 @@ func _physics_process(delta):
 	elif _overlap_state == OverlapState.None and _throw_state == ThrowState.Preparing and _time_since_prepare < margin:
 		_time_since_prepare += delta
 
-	if is_instance_valid(_sickle) and _sickle.should_retract() and _overlap_state == OverlapState.None and _throw_state == ThrowState.None:
+	if is_instance_valid(_sickle) and _overlap_state == OverlapState.None and _throw_state == ThrowState.None:
 		var sickle_to_player = self.global_transform.origin - _sickle.global_transform.origin
 		sickle_to_player.y = 0.0
 		_sickle.add_central_force(sickle_to_player.normalized() * 50)
@@ -204,6 +206,8 @@ func _throw_sickle(bounce: bool):
 	if _sickle_has_critical_velocity():
 		_sickle.linear_velocity = _sickle.linear_velocity.bounce(impulse_direction)
 		_play_sound(_sound_bounce)
+		if _game.is_in_rhythm():
+			_play_sound(_sound_rhythm_bounce)
 	else:
 		_sickle.linear_velocity = Vector3.ZERO
 		_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
