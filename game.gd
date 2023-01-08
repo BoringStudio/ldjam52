@@ -8,12 +8,14 @@ export(float) var cell_size = 1.0
 export(int) var bpm = 103
 export(float) var max_bit_offset = 0.1
 
+var song_position: float = 0 setget , _get_song_position
+onready var beat_period: float = 60.0 / bpm
+
 var _start_timestamp: int = 0
 var _start_delay: float = 0
 
 onready var _field = $Field
 onready var _music = $AudioStreamPlayer
-onready var _period: float = 60.0 / bpm
 
 func _ready():
 	var top_left = Vector3(-width * cell_size / 2.0, 0, -height * cell_size / 2.0)
@@ -23,15 +25,20 @@ func _ready():
 			wheat_insance.transform.origin = top_left + Vector3(col, 0, row) * cell_size
 			_field.add_child(wheat_insance)
 
-	_start_timestamp = Time.get_ticks_msec()
+	_start_timestamp = Time.get_ticks_usec()
 	_start_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 	_music.play()
 
 
 func delay_action(shift: float = 0.0, period_div: float = 1.0):
-	var period = _period / period_div
-	var time = (Time.get_ticks_msec() - _start_timestamp) / 1000.0
+	var adjusted_period = beat_period / period_div
+	var time = (Time.get_ticks_usec() - _start_timestamp) / 1000000.0
 	time = max(0, time + shift - _start_delay)
-	var offset_sec = period - fmod(time, period)
+	var offset_sec = adjusted_period - fmod(time, adjusted_period)
 	if offset_sec > max_bit_offset and offset_sec < max_bit_offset * 4:
 		yield(get_tree().create_timer(offset_sec - max_bit_offset), "timeout")
+
+
+func _get_song_position():
+	var time = (Time.get_ticks_usec() - _start_timestamp) / 1000000.0
+	return max(0, time - _start_delay)

@@ -60,7 +60,7 @@ func _input(event):
 		if _remaining_dash <= -dash_interval:
 			_jumping = true
 
-			var action = _game.delay_action(0.1, 2)
+			var action = _game.delay_action(0, 2)
 			if action is GDScriptFunctionState:
 				yield(action, "completed")
 

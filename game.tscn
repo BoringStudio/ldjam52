@@ -40,7 +40,7 @@ shape = SubResource( 2 )
 mesh = SubResource( 3 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.529964, 0.84802, 0, -0.84802, 0.529964, 0, 19.7864, 19.382 )
+transform = Transform( 1, 0, 0, 0, 0.399902, 0.916558, 0, -0.916558, 0.399902, 0, 24.4896, 15.9259 )
 
 [node name="Sun" type="DirectionalLight" parent="."]
 transform = Transform( 0.841963, 0.454746, 0.290353, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
@@ -228,4 +228,4 @@ mesh = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
-volume_db = -30.728
+volume_db = 1.0

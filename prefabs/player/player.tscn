@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://prefabs/player/player.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/sickle/sickle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/beat_indicator/beat_indicator.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -43,6 +44,11 @@ collision_mask = 2
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.140208, -4.58889e-08 )
 shape = SubResource( 5 )
+
+[node name="Hat" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33216, 0 )
+
+[node name="BeatIndicator" parent="Hat" instance=ExtResource( 3 )]
 
 [connection signal="body_entered" from="Area" to="." method="_on_sickle_entered"]
 [connection signal="body_exited" from="Area" to="." method="_on_sickle_exited"]

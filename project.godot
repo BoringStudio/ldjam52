@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Spatial",
+"class": "BeatIndicator",
+"language": "GDScript",
+"path": "res://prefabs/beat_indicator/beat_indicator.gd"
+}, {
+"base": "Spatial",
 "class": "Game",
 "language": "GDScript",
 "path": "res://game.gd"
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://prefabs/sickle/sickle.gd"
 } ]
 _global_script_class_icons={
+"BeatIndicator": "",
 "Game": "",
 "Obstacle": "",
 "Sickle": ""

@@ -1,0 +1,39 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode cull_disabled;
+
+uniform float thickness = 0.1;
+uniform float color_shift = 0;
+uniform sampler2D gradient;
+
+void vertex() {
+	float squared_len = VERTEX.x * VERTEX.x + VERTEX.z * VERTEX.z;
+	if (squared_len < 0.9) {
+		VERTEX.xyz = VERTEX.xyz * (1.0 - thickness) / sqrt(squared_len);
+	}
+}
+
+void fragment() {
+	vec4 color = texture(gradient, vec2(color_shift, 0.5));
+	ALBEDO = vec3(0, 0, 0);
+	EMISSION.xyz = color.rgb;
+	ALPHA = color.a;
+}
+"
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.29, 0.59, 0.87054, 0.89, 0.91, 1 )
+colors = PoolColorArray( 0.917969, 0.487671, 0.487671, 0, 0.619608, 0.733333, 1, 0.768627, 1, 0.992157, 0.619608, 0.831373, 1, 0.992157, 0.619608, 0.831373, 0.92549, 1, 0.619608, 0.831373, 0.882353, 1, 0.619608, 0.831373, 1, 0.905882, 0.619608, 0.831373 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 1024
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/thickness = 0.4
+shader_param/color_shift = 0.1
+shader_param/gradient = SubResource( 3 )

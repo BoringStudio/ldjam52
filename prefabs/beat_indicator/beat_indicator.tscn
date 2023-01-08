@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://prefabs/beat_indicator/ring.mesh" type="ArrayMesh" id=1]
+[ext_resource path="res://prefabs/beat_indicator/ring.tres" type="Material" id=2]
+[ext_resource path="res://prefabs/beat_indicator/beat_indicator.gd" type="Script" id=3]
+
+[node name="BeatIndicator" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Rings" type="Spatial" parent="."]
+
+[node name="Ring" type="MeshInstance" parent="Rings"]
+mesh = ExtResource( 1 )
+skeleton = NodePath("../..")
+material/0 = ExtResource( 2 )
