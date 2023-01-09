@@ -41,9 +41,10 @@ onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
 onready var _blood_particles: Particles = $Blood
 
 onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3")
+onready var _sound_throw_empty: AudioStream = preload("../../audio/throw_empty.mp3")
 onready var _sound_dash: AudioStream = preload("../../audio/dash.mp3")
 onready var _sound_damange: AudioStream = preload("../../audio/hit_player.mp3")
-onready var _sound_bounce: AudioStream = preload("../../audio/hit_wall.mp3")
+onready var _sound_bounce: AudioStream = preload("../../audio/bounce.mp3")
 onready var _sound_rhythm_bounce: AudioStream = preload("../../audio/rhythm_bounce.mp3")
 
 onready var _game: Game = get_tree().get_current_scene()
@@ -79,7 +80,7 @@ func _input(event):
 		if _throw_state != ThrowState.None:
 			return
 
-		_play_sound(_sound_throw)
+		_play_sound(_sound_throw_empty)
 		_throw_sickle(_time_since_overlap < margin)
 
 

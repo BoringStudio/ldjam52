@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/player/player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://audio/103bpm_music.mp3" type="AudioStream" id=5]
 [ext_resource path="res://fonts/Purple Smile.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://prefabs/camera/camera.tscn" type="PackedScene" id=7]
+[ext_resource path="res://prefabs/vegetation/field.tres" type="Material" id=8]
+[ext_resource path="res://prefabs/vegetation/ground.material" type="Material" id=9]
+[ext_resource path="res://prefabs/vegetation/grass_ground.png" type="Texture" id=10]
+[ext_resource path="res://prefabs/vegetation/bush1.tscn" type="PackedScene" id=11]
+[ext_resource path="res://prefabs/vegetation/birch1.tscn" type="PackedScene" id=12]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -14,14 +19,17 @@
 extents = Vector3( 40, 0.2, 40 )
 
 [sub_resource type="CubeMesh" id=3]
-size = Vector3( 40, 0.4, 40 )
+material = ExtResource( 9 )
+size = Vector3( 80, 0.4, 80 )
 
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.592157, 0.823529, 0.478431, 1 )
+albedo_texture = ExtResource( 10 )
+uv1_scale = Vector3( 100, 100, 1 )
 
 [sub_resource type="PlaneMesh" id=4]
 material = SubResource( 5 )
-size = Vector2( 100, 100 )
+size = Vector2( 1000, 1000 )
 
 [sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.243137, 0.223529, 0.286275, 1 )
@@ -48,6 +56,8 @@ font_data = ExtResource( 6 )
 [node name="Root" type="Spatial"]
 script = ExtResource( 1 )
 wheat = ExtResource( 3 )
+width = 40
+height = 40
 cell_size = 2.0
 
 [node name="Floor" type="Spatial" parent="."]
@@ -62,10 +72,12 @@ shape = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Floor/StaticBody"]
 mesh = SubResource( 3 )
+material/0 = ExtResource( 8 )
 
 [node name="Sun" type="DirectionalLight" parent="."]
-transform = Transform( 0.841963, 0.454746, 0.290353, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
+transform = Transform( 0.841963, 0.454746, 0.290352, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
 visible = false
+light_color = Color( 1, 0.992157, 0.772549, 1 )
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
@@ -247,6 +259,148 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 10 )
 
 [node name="Fence55" parent="Spatial" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 10 )
+
+[node name="Fence57" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 8 )
+
+[node name="Fence58" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6 )
+
+[node name="Bushes" type="Spatial" parent="."]
+
+[node name="bush1" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0, -45 )
+
+[node name="bush2" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, -38 )
+
+[node name="bush5" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, -60 )
+
+[node name="bush6" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -54 )
+
+[node name="bush7" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47, 0, -57 )
+
+[node name="bush8" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62, 0, -27 )
+
+[node name="bush9" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 0, -1 )
+
+[node name="bush10" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 77, 0, 30 )
+
+[node name="bush11" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 20 )
+
+[node name="bush12" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 57 )
+
+[node name="bush13" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 49 )
+
+[node name="bush14" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 55 )
+
+[node name="bush15" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 62 )
+
+[node name="bush16" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, 46 )
+
+[node name="bush17" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 0, 24 )
+
+[node name="bush3" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -62, 0, -20 )
+
+[node name="bush18" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -54, 0, 9 )
+
+[node name="bush30" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 1.76777, 0, -1.76777, 0, 1.9, 0, 1.76777, 0, 1.76777, -14, 0, -49 )
+
+[node name="bush19" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -59, 0, 40 )
+
+[node name="bush20" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -52, 0, 62 )
+
+[node name="bush21" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -11, 0, -69 )
+
+[node name="bush22" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -53, 0, -77 )
+
+[node name="bush23" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 35, 0, -81 )
+
+[node name="bush24" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 77, 0, -67 )
+
+[node name="bush25" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 89, 0, -36 )
+
+[node name="bush26" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 96, 0, -1 )
+
+[node name="bush27" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 54, 0, -8 )
+
+[node name="bush31" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 48, 0, -31 )
+
+[node name="bush28" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 76, 0, 45 )
+
+[node name="bush29" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 67, 0, 14 )
+
+[node name="bush4" parent="Bushes" instance=ExtResource( 11 )]
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -74, 0, -55 )
+
+[node name="Trees" type="Spatial" parent="."]
+
+[node name="birch1" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -39, 0, -55 )
+
+[node name="birch2" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -62 )
+
+[node name="birch3" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -71, 0, -40 )
+
+[node name="birch4" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -54 )
+
+[node name="birch12" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 43 )
+
+[node name="birch13" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, -33 )
+
+[node name="birch5" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -40 )
+
+[node name="birch6" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 0, -7 )
+
+[node name="birch7" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 0, 19 )
+
+[node name="birch8" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59, 0, 32 )
+
+[node name="birch9" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 69, 0, 53 )
+
+[node name="birch10" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53, 0, 28 )
+
+[node name="birch11" parent="Trees" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )

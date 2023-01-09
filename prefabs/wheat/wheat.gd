@@ -11,6 +11,7 @@ onready var _game: Game = get_tree().get_current_scene()
 
 func _ready():
 	_audio.connect("finished", self, "_on_sound_finished")
+	_meshes.transform = _meshes.transform.rotated(Vector3.UP, deg2rad(90 * (randi() % 4)))
 
 
 func _on_body_entered(body):

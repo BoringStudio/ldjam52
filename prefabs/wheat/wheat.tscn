@@ -2,10 +2,9 @@
 
 [ext_resource path="res://prefabs/wheat/wheat.gd" type="Script" id=1]
 [ext_resource path="res://audio/wheat.ogg" type="AudioStream" id=2]
+[ext_resource path="res://prefabs/wheat/wheat_Plane008.mesh" type="ArrayMesh" id=3]
 
 [sub_resource type="BoxShape" id=1]
-
-[sub_resource type="CubeMesh" id=2]
 
 [sub_resource type="SpatialMaterial" id=3]
 params_diffuse_mode = 4
@@ -14,6 +13,7 @@ params_billboard_mode = 3
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
+albedo_color = Color( 0.698039, 0.611765, 0.419608, 1 )
 
 [sub_resource type="ParticlesMaterial" id=4]
 emission_shape = 1
@@ -35,110 +35,25 @@ shape = SubResource( 1 )
 
 [node name="Meshes" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0691563, -0.0587499, -0.0155384, 0.00612501, 0.695646, 0, 0.0152632, -0.0129665, 0.0704029, -0.0655798, 0.571686, 0 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
+[node name="MeshInstance2" type="MeshInstance" parent="Meshes"]
+transform = Transform( -2.48229, 0, 2.46743, 0, 3.5, 0, -2.46743, 0, -2.48229, -0.690803, -4.76837e-07, -0.521816 )
+layers = 2
+mesh = ExtResource( 3 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0656506, 0, 0.0276474, 0, 0.580989, 0, -0.0272592, 0, 0.0665855, -0.228805, 0.489225, 0.186695 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
+transform = Transform( -2.48229, 0, 2.46743, 0, 3.5, 0, -2.46743, 0, -2.48229, 0.245577, 0, -0.486431 )
+layers = 2
+mesh = ExtResource( 3 )
 
 [node name="MeshInstance4" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0628062, 0.0524576, 0.0331342, 0, 0.570091, -0.0138988, -0.0332935, 0.0989582, 0.0625057, 0.171204, 0.489225, 0.349518 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance2" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0696393, 0, -0.0144663, 0.00121931, 0.527863, 0.00603799, 0.014211, -0.0452909, 0.0703724, 0.333799, 0.435354, 0 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance21" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0113858, 0.0423526, -0.0709326, 0.00121931, 0.527863, 0.00603799, 0.0701566, -0.0160476, 0.0114068, 0.755252, 0.435354, 0 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
+transform = Transform( 2.69882, 0, -2.22854, 0, 3.5, 0, 2.22854, 0, 2.69882, 0.567843, 0, 0.501269 )
+layers = 2
+mesh = ExtResource( 3 )
 
 [node name="MeshInstance5" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0144269, -0.012256, -0.0705855, 0.00612501, 0.695646, 0, 0.0693356, -0.0589022, 0.0146869, -0.273815, 0.571686, -0.601798 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance6" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0517754, 0, -0.0494007, 0, 0.580989, 0, 0.0487071, 0, 0.0525127, -0.624584, 0.489225, -0.733965 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance7" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0561133, -0.0687582, -0.0434302, 0, 0.570091, -0.0138988, 0.043639, 0.0884129, 0.0558449, -0.634798, 0.489225, -0.302364 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance8" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0155846, 0.0413107, -0.0701182, 0.00121931, 0.527863, 0.00603799, 0.0693448, -0.0185658, 0.0156522, -0.0609797, 0.435354, -0.323624 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance9" type="MeshInstance" parent="Meshes"]
-transform = Transform( -0.0708017, 0.0601478, -0.00166463, 0.00612501, 0.695646, 0, 0.00163515, -0.0013891, -0.072078, 0.500104, 0.518876, -0.381463 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance10" type="MeshInstance" parent="Meshes"]
-transform = Transform( -0.0572761, 0, -0.0427008, 0, 0.580989, 0, 0.0421012, 0, -0.0580918, 0.698541, 0.436416, -0.61725 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance11" type="MeshInstance" parent="Meshes"]
-transform = Transform( -0.0530772, -0.074503, -0.0470589, 0, 0.570091, -0.0138988, 0.0472851, -0.0836291, -0.0528233, 0.241525, 0.436416, -0.680189 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance12" type="MeshInstance" parent="Meshes"]
-transform = Transform( -0.0710204, 0.0107796, -0.00269857, 0.00121931, 0.527863, 0.00603799, 0.00277207, 0.0439894, -0.0717933, 0.286024, 0.382544, -0.308876 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance13" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.00871796, -0.00740612, -0.0715489, 0.00612501, 0.695646, 0, 0.070282, -0.0597062, 0.00887512, 0.629599, 0.432799, 0.383851 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance14" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0476259, 0, -0.0535231, 0, 0.580989, 0, 0.0527716, 0, 0.0483042, 0.37719, 0.350338, 0.230566 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance15" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0523632, -0.0757469, -0.0478446, 0, 0.570091, -0.0138988, 0.0480746, 0.0825041, 0.0521127, 0.35736, 0.350338, 0.661988 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance16" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.00987107, 0.0426886, -0.071162, 0.00121931, 0.527863, 0.00603799, 0.0703857, -0.0151311, 0.00987534, 0.731487, 0.296466, 0.671304 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance17" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.00871796, -0.00740612, -0.0715489, 0.00612501, 0.695646, 0, 0.070282, -0.0597062, 0.00887512, -0.347069, 0.389013, 0.383851 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance18" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0476259, 0, -0.0535231, 0, 0.580989, 0, 0.0527716, 0, 0.0483042, -0.602219, 0.306552, 0.230566 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance19" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.0523632, -0.0757469, -0.0478446, 0, 0.570091, -0.0138988, 0.0480746, 0.0825041, 0.0521127, -0.56217, 0.306552, 0.661988 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
-
-[node name="MeshInstance20" type="MeshInstance" parent="Meshes"]
-transform = Transform( 0.00987107, 0.0426886, -0.071162, 0.00121931, 0.527863, 0.00603799, 0.0703857, -0.0151311, 0.00987534, -0.188043, 0.252681, 0.671304 )
-mesh = SubResource( 2 )
-skeleton = NodePath("../..")
+transform = Transform( -2.3401, 0, -2.60268, 0, 3.5, 0, 2.60268, 0, -2.3401, -0.596381, 0, 0.667453 )
+layers = 2
+mesh = ExtResource( 3 )
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.73, 0 )
@@ -149,7 +64,7 @@ max_distance = 200.0
 attenuation_filter_db = -0.1
 
 [node name="Particles" type="Particles" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23565, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.933748, 0 )
 material_override = SubResource( 3 )
 cast_shadow = 0
 emitting = false

@@ -23,6 +23,13 @@ void fragment() {
 		discard;
 	}
 	ALBEDO = color.rgb;
+	
+	float alpha = color.a;
+	if (UV.x > 0.9) {
+		alpha *= 1.0 - (UV.x - 0.9) / 0.1;
+	} else {
+		alpha *= UV.x;
+	}
 	ALPHA = color.a * UV.x;
 }"
 

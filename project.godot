@@ -46,6 +46,10 @@ config/icon="res://icon.png"
 
 enabled=PoolStringArray( "res://addons/Trail/plugin.cfg" )
 
+[global]
+
+snap=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
