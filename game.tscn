@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://game.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/player/player.tscn" type="PackedScene" id=2]
@@ -8,10 +8,10 @@
 [ext_resource path="res://fonts/Purple Smile.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://prefabs/camera/camera.tscn" type="PackedScene" id=7]
 [ext_resource path="res://prefabs/vegetation/field.tres" type="Material" id=8]
-[ext_resource path="res://prefabs/vegetation/ground.material" type="Material" id=9]
 [ext_resource path="res://prefabs/vegetation/grass_ground.png" type="Texture" id=10]
 [ext_resource path="res://prefabs/vegetation/bush1.tscn" type="PackedScene" id=11]
 [ext_resource path="res://prefabs/vegetation/birch1.tscn" type="PackedScene" id=12]
+[ext_resource path="res://prefabs/ui/health.png" type="Texture" id=13]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -19,8 +19,8 @@
 extents = Vector3( 40, 0.2, 40 )
 
 [sub_resource type="CubeMesh" id=3]
-material = ExtResource( 9 )
-size = Vector3( 80, 0.4, 80 )
+material = ExtResource( 8 )
+size = Vector3( 40, 0.4, 40 )
 
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.592157, 0.823529, 0.478431, 1 )
@@ -47,17 +47,130 @@ bg_color = Color( 0.545098, 0.792157, 0.45098, 1 )
 bg_color = Color( 0.145098, 0.133333, 0.168627, 1 )
 border_color = Color( 0.243137, 0.223529, 0.286275, 1 )
 
+[sub_resource type="Animation" id=11]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Score:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 45 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Score:custom_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.917647, 0.741176, 0.466667, 1 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "add"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Score:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0525644, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 44, 45, 44 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Score:custom_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.917647, 0.741176, 0.466667, 1 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "add_bounce"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Score:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0525644, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 44, 48, 44 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Score:custom_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.0529988, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.917647, 0.741176, 0.466667, 1 ), Color( 0.294118, 0.592157, 0.301961, 1 ), Color( 0.917647, 0.741176, 0.466667, 1 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "add_rhythm_bounce"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Score:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0525644, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 44, 50, 44 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Score:custom_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.0529988, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.917647, 0.741176, 0.466667, 1 ), Color( 0.180392, 0.823529, 0.203922, 1 ), Color( 0.917647, 0.741176, 0.466667, 1 ) ]
+}
+
 [sub_resource type="DynamicFont" id=6]
 size = 45
 outline_size = 4
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 6 )
 
+[sub_resource type="StyleBoxTexture" id=13]
+texture = ExtResource( 13 )
+region_rect = Rect2( 0, 0, 512, 512 )
+
 [node name="Root" type="Spatial"]
 script = ExtResource( 1 )
 wheat = ExtResource( 3 )
-width = 40
-height = 40
 cell_size = 2.0
 
 [node name="Floor" type="Spatial" parent="."]
@@ -72,7 +185,6 @@ shape = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Floor/StaticBody"]
 mesh = SubResource( 3 )
-material/0 = ExtResource( 8 )
 
 [node name="Sun" type="DirectionalLight" parent="."]
 transform = Transform( 0.841963, 0.454746, 0.290352, 0, -0.538153, 0.842847, 0.539535, -0.709646, -0.453105, 10.221, 14.3942, -34.6073 )
@@ -269,7 +381,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6 )
 [node name="Bushes" type="Spatial" parent="."]
 
 [node name="bush1" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 0, -45 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, -30 )
 
 [node name="bush2" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, -38 )
@@ -278,55 +390,55 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, -38 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, -60 )
 
 [node name="bush6" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -54 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -36 )
 
 [node name="bush7" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47, 0, -57 )
 
 [node name="bush8" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 62, 0, -27 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, -30 )
 
 [node name="bush9" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 17 )
 
 [node name="bush10" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 77, 0, 30 )
 
 [node name="bush11" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, 20 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 0, 28 )
 
 [node name="bush12" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 57 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 31 )
 
 [node name="bush13" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 49 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, 36 )
 
 [node name="bush14" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 55 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 30 )
 
 [node name="bush15" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 62 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 6, 0, 24 )
 
 [node name="bush16" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, 46 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 31 )
 
 [node name="bush17" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 0, 24 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0, -5 )
 
 [node name="bush3" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -62, 0, -20 )
 
 [node name="bush18" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -54, 0, 9 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -42, 0, 7 )
 
 [node name="bush30" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 1.76777, 0, -1.76777, 0, 1.9, 0, 1.76777, 0, 1.76777, -14, 0, -49 )
+transform = Transform( 1.76777, 0, -1.76777, 0, 1.9, 0, 1.76777, 0, 1.76777, -28, 0, -36 )
 
 [node name="bush19" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -59, 0, 40 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -32, 0, 21 )
 
 [node name="bush20" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -52, 0, 62 )
+transform = Transform( 1.76777, 0, -1.76777, 0, 1.9, 0, 1.76777, 0, 1.76777, -41, 0, 33 )
 
 [node name="bush21" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -11, 0, -69 )
@@ -341,22 +453,22 @@ transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 35, 0, -81 )
 transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 77, 0, -67 )
 
 [node name="bush25" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 89, 0, -36 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 50, 0, -25 )
 
 [node name="bush26" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 96, 0, -1 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 27, 0, -45 )
 
 [node name="bush27" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 54, 0, -8 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 33, 0, -12 )
 
 [node name="bush31" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 48, 0, -31 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 14, 0, -34 )
 
 [node name="bush28" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 76, 0, 45 )
 
 [node name="bush29" parent="Bushes" instance=ExtResource( 11 )]
-transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 67, 0, 14 )
+transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, 41, 0, 17 )
 
 [node name="bush4" parent="Bushes" instance=ExtResource( 11 )]
 transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -74, 0, -55 )
@@ -364,10 +476,10 @@ transform = Transform( 2.5, 0, 0, 0, 1.9, 0, 0, 0, 2.5, -74, 0, -55 )
 [node name="Trees" type="Spatial" parent="."]
 
 [node name="birch1" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -39, 0, -55 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, -36 )
 
 [node name="birch2" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -62 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -51 )
 
 [node name="birch3" parent="Trees" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -71, 0, -40 )
@@ -376,31 +488,31 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -71, 0, -40 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -54 )
 
 [node name="birch12" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 43 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 31 )
 
 [node name="birch13" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, -33 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47, 0, -8 )
 
 [node name="birch5" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -40 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, -32 )
 
 [node name="birch6" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 0, -7 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -36, 0, -11 )
 
 [node name="birch7" parent="Trees" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 0, 19 )
 
 [node name="birch8" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59, 0, 32 )
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, -42, 0, 24 )
 
 [node name="birch9" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 69, 0, 53 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0, 37 )
 
 [node name="birch10" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53, 0, 28 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 16 )
 
 [node name="birch11" parent="Trees" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 0, 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
@@ -408,7 +520,7 @@ mesh = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
-volume_db = -32.547
+volume_db = -10.0
 
 [node name="GUI" type="Control" parent="."]
 anchor_right = 1.0
@@ -433,14 +545,55 @@ custom_styles/fg = SubResource( 7 )
 custom_styles/bg = SubResource( 8 )
 value = 50.0
 
-[node name="CenterContainer" type="CenterContainer" parent="GUI"]
+[node name="Up" type="CenterContainer" parent="GUI"]
 anchor_right = 1.0
 anchor_bottom = 0.5
 
-[node name="Timer" type="Label" parent="GUI/CenterContainer"]
-margin_left = 487.0
-margin_top = 117.0
-margin_right = 536.0
-margin_bottom = 182.0
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Up"]
+margin_left = 451.0
+margin_top = 85.0
+margin_right = 573.0
+margin_bottom = 215.0
+alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GUI/Up/VBoxContainer"]
+anims/RESET = SubResource( 11 )
+anims/add = SubResource( 12 )
+anims/add_bounce = SubResource( 14 )
+anims/add_rhythm_bounce = SubResource( 15 )
+
+[node name="Timer" type="Label" parent="GUI/Up/VBoxContainer"]
+margin_right = 122.0
+margin_bottom = 63.0
 custom_fonts/font = SubResource( 6 )
 text = "60"
+align = 1
+valign = 1
+
+[node name="Score" type="Label" parent="GUI/Up/VBoxContainer"]
+margin_top = 67.0
+margin_right = 122.0
+margin_bottom = 130.0
+custom_colors/font_color = Color( 0.917647, 0.741176, 0.466667, 1 )
+custom_fonts/font = SubResource( 6 )
+text = "score"
+align = 1
+valign = 1
+
+[node name="Bottom" type="CenterContainer" parent="GUI"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Bottom"]
+margin_left = 487.0
+margin_top = 125.0
+margin_right = 537.0
+margin_bottom = 175.0
+
+[node name="Heart" type="PanelContainer" parent="GUI/Bottom/HBoxContainer"]
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+rect_pivot_offset = Vector2( 0.5, 0.5 )
+custom_styles/panel = SubResource( 13 )

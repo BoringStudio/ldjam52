@@ -19,6 +19,7 @@ export(float) var dash_speed: float = 40.0
 export(float) var dash_duration: float = 0.15
 export(float) var dash_interval: float = 0.1
 export(float) var ricochet_velocity: float = 15.0
+export(float) var damage_velocity: float = 20.0
 export(float) var max_sickle_impulse: float = 40.0
 export(float) var margin: float = 0.15
 export(float) var rhythm_margin: float = 0.2
@@ -94,7 +95,7 @@ func _process(delta):
 		_time_since_overlap += delta
 		if _time_since_overlap > margin:
 			_overlap_state = OverlapState.Hit
-			if _sickle_has_critical_velocity():
+			if _sickle_has_critical_velocity(damage_velocity):
 				_take_damage()
 	elif _overlap_state == OverlapState.None and _throw_state == ThrowState.Preparing and _time_since_prepare < margin:
 		_time_since_prepare += delta
@@ -207,16 +208,21 @@ func _throw_sickle(bounce: bool):
 	var impulse_direction = _get_view_direction()
 	var impulse = max_sickle_impulse;
 
-	if _sickle_has_critical_velocity():
+	var proper_bounce = false
+	if _sickle_has_critical_velocity(ricochet_velocity):
 		#_sickle.linear_velocity = _sickle.linear_velocity.bounce(impulse_direction)
 		_sickle.linear_velocity = impulse_direction * max(_sickle.linear_velocity.length(), max_sickle_impulse)
 		_play_sound(_sound_bounce)
+		proper_bounce = true
 	else:
 		_sickle.linear_velocity = Vector3.ZERO
 		_sickle.apply_impulse(Vector3.ZERO, impulse_direction * impulse)
 
 	if _game.is_in_rhythm(0.0, 1.0, rhythm_margin):
 		_play_sound(_sound_rhythm_bounce)
+		_game.add_rhythm_bounce_score()
+	elif proper_bounce:
+		_game.add_bounce_score()
 
 	_sickle.reset_bounces(1)
 
@@ -227,6 +233,7 @@ func _throw_sickle(bounce: bool):
 
 func _take_damage():
 	_play_sound(_sound_damange)
+	_game.take_damage()
 	var particles = _blood_particles.duplicate(DUPLICATE_USE_INSTANCING)
 	self.add_child(particles)
 	particles.emitting = true
@@ -234,5 +241,5 @@ func _take_damage():
 	particles.queue_free()
 
 
-func _sickle_has_critical_velocity() -> bool:
-	return is_instance_valid(_sickle) and _sickle.linear_velocity.length_squared() > ricochet_velocity * ricochet_velocity
+func _sickle_has_critical_velocity(velocity: float) -> bool:
+	return is_instance_valid(_sickle) and _sickle.linear_velocity.length_squared() > velocity * velocity

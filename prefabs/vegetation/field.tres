@@ -7,4 +7,4 @@ params_diffuse_mode = 4
 params_specular_mode = 4
 albedo_texture = ExtResource( 1 )
 metallic_specular = 0.0
-uv1_scale = Vector3( 40, 40, 0 )
+uv1_scale = Vector3( 20, 20, 0 )

@@ -8,7 +8,11 @@ export(float) var cell_size = 1.0
 export(int) var bpm = 103
 export(float) var max_bit_offset = 0.1
 export(float) var score_per_wheat = 10.0
+export(float) var score_per_bounce = 100.0
+export(float) var score_per_rhythm_bounce = 1000.0
 export(float) var timeout = 120.0
+export(int) var health = 5
+export(float) var percentage = 0.9
 
 var song_position: float = 0 setget , _get_song_position
 onready var beat_period: float = 60.0 / bpm
@@ -17,11 +21,18 @@ var _start_timestamp: int = 0
 var _start_delay: float = 0
 var _score: float = 0
 var _min_score: float = width * height * score_per_wheat
+var _health: int = health
+var _required_wheat: float = 0
+var _gathared_wheat: int = 0
 
 onready var _field = $Field
 onready var _music = $AudioStreamPlayer
 onready var _progress_bar = $GUI/ProgressBarRoot/ProgressBar
-onready var _time_label = $GUI/CenterContainer/Timer
+onready var _time_label = $GUI/Up/VBoxContainer/Timer
+onready var _score_label = $GUI/Up/VBoxContainer/Score
+onready var _ui_animation_player: AnimationPlayer = $GUI/Up/VBoxContainer/AnimationPlayer
+onready var _health_bar = $GUI/Bottom/HBoxContainer
+onready var _heart_icon = $GUI/Bottom/HBoxContainer/Heart
 
 func _ready():
 	var top_left = Vector3(-width * cell_size / 2.0, 0, -height * cell_size / 2.0)
@@ -30,10 +41,18 @@ func _ready():
 			var wheat_insance: Spatial = wheat.instance()
 			wheat_insance.transform.origin = top_left + Vector3(col, 0, row) * cell_size
 			_field.add_child(wheat_insance)
+			_required_wheat += 1.0
+
+	_required_wheat = _required_wheat * percentage
 
 	_start_timestamp = Time.get_ticks_usec()
 	_start_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 	_music.play()
+	_add_score(0, "add")
+
+	for _i in range(1, _health):
+		var heart = _heart_icon.duplicate(DUPLICATE_USE_INSTANCING)
+		_health_bar.add_child(heart)
 
 
 func delay_action(shift: float = 0.0, period_div: float = 1.0):
@@ -47,12 +66,31 @@ func is_in_rhythm(shift: float = 0.0, period_div: float = 1.0, margin: float = 0
 
 
 func add_wheat_score():
-	_add_score(score_per_wheat)
+	_gathared_wheat += 1
+	_add_score(score_per_wheat, "add")
 
 
-func _add_score(score_to_add: int):
+func add_bounce_score():
+	_add_score(score_per_bounce, "add_bounce")
+
+
+func add_rhythm_bounce_score():
+	_add_score(score_per_rhythm_bounce, "add_rhythm_bounce")
+
+
+func take_damage():
+	if _health > 0:
+		_health -= 1
+		var last_heart = _health_bar.get_child(0)
+		if is_instance_valid(last_heart):
+			last_heart.queue_free()
+
+
+func _add_score(score_to_add: int, animation: String):
 	_score += score_to_add
-	_progress_bar.value = 100.0 * _score / _min_score
+	_progress_bar.value = _gathared_wheat * 100.0 / _required_wheat
+	_score_label.text = "%d" % _score
+	_ui_animation_player.play(animation)
 
 
 func _physics_process(_delta):

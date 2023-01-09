@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=1]
 [ext_resource path="res://prefabs/sickle/sickle.gd" type="Script" id=2]
@@ -46,6 +46,26 @@ shader_param/color = Color( 1, 0.992157, 0.815686, 0.403922 )
 shader_param/threshold = 0.5
 shader_param/noise = SubResource( 7 )
 
+[sub_resource type="SpatialMaterial" id=8]
+params_diffuse_mode = 4
+params_specular_mode = 4
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.933333, 0.878431, 0.737255, 1 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3( 0, 1, 0 )
+initial_velocity = 2.0
+scale = 0.1
+color = Color( 0.996078, 1, 0.458824, 1 )
+
+[sub_resource type="QuadMesh" id=10]
+size = Vector2( 0.5, 0.2 )
+
 [node name="Sickle" type="RigidBody"]
 collision_layer = 2
 collision_mask = 6
@@ -70,5 +90,17 @@ wireframe_color = Color( 1, 0, 0, 1 )
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0.397515, 0, 0.69745 )
 mesh = ExtResource( 3 )
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.216976, 0 )
+material_override = SubResource( 8 )
+cast_shadow = 0
+emitting = false
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+visibility_aabb = AABB( -1, -1.17188, -1, 2, 2.34376, 2 )
+process_material = SubResource( 9 )
+draw_pass_1 = SubResource( 10 )
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

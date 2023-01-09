@@ -11,6 +11,7 @@ var _spin_fast: bool = false
 onready var _game: Game = get_tree().get_current_scene()
 onready var _collision_shape: CollisionShape = $CollisionShape
 onready var _max_velocity_squared = max_velocity * max_velocity
+onready var _particles = $Particles
 
 
 func set_collision_disabled(collision_disabled: bool):
@@ -47,8 +48,16 @@ func _on_body_entered(body):
 
 		_spin_fast = false
 		body.play_sound()
+		
+		var particles = _particles.duplicate(DUPLICATE_USE_INSTANCING)
+		get_tree().get_current_scene().add_child(particles)
+		particles.emitting = true
+		particles.global_transform.origin = self.global_transform.origin
 
 		_colliding = false
+		
+		yield(get_tree().create_timer(0.1), "timeout")
+		particles.queue_free()
 
 
 func _integrate_forces(state):
