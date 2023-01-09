@@ -38,7 +38,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="ldjam52"
+config/name="SickleFrenzy"
 run/main_scene="res://game.tscn"
 config/icon="res://icon.png"
 
