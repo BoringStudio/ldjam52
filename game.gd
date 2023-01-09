@@ -5,6 +5,7 @@ enum State {
 	Playing,
 	Win,
 	Dead,
+	Timeout,
 }
 
 export(PackedScene) var wheat: PackedScene
@@ -130,7 +131,9 @@ func _finish_game(state: int):
 	_final_screen_root.visible = true
 	if state == State.Dead:
 		_final_screen_title.text = "The sickle is not a toy!"
-	else:
+	elif state == State.Timeout:
+		_final_screen_title.text = "Too slow!"
+	elif state == State.Win:
 		_final_screen_title.text = "Nice!"
 	_final_screen_score.text = "Score: %d (%d%%)" % [_score, _progress_bar.value]
 
@@ -139,7 +142,7 @@ func _physics_process(_delta):
 	var offset = _get_song_position()
 	var diff = timeout - offset
 	if diff < 0:
-		_time_label.text = "game over"
+		_finish_game(State.Timeout)
 	else:
 		var seconds = int(diff)
 		_time_label.text = "%02d:%02d" % [(seconds / 60), (seconds % 60)]
