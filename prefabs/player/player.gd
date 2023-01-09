@@ -35,11 +35,13 @@ var _throw_state: int = ThrowState.None
 var _overlap_state: int = OverlapState.None
 var _time_since_prepare: float = 0.0
 var _time_since_overlap: float = 0.0
+var _dead: bool = false
 
 onready var _camera: Camera = get_viewport().get_camera()
 onready var _socket: Spatial = $Socket
 onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
 onready var _blood_particles: Particles = $Blood
+onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
 onready var _sound_throw: AudioStream = preload("../../audio/throw.mp3")
 onready var _sound_throw_empty: AudioStream = preload("../../audio/throw_empty.mp3")
@@ -50,11 +52,15 @@ onready var _sound_rhythm_bounce: AudioStream = preload("../../audio/rhythm_boun
 
 onready var _game: Game = get_tree().get_current_scene()
 
+
 func _ready():
 	_update_view_target(get_viewport().get_mouse_position())
 
 
 func _input(event):
+	if _dead:
+		return
+
 	if event is InputEventMouseMotion:
 		_update_view_target(event.position)
 	elif event.is_action_pressed("dash"):
@@ -81,11 +87,16 @@ func _input(event):
 		if _throw_state != ThrowState.None:
 			return
 
+		_animation_player.play("hit")
+		_animation_player.seek(0, true)
 		_play_sound(_sound_throw_empty)
 		_throw_sickle(_time_since_overlap < margin)
 
 
 func _process(delta):
+	if _dead:
+		return
+
 	var forward = -_get_view_direction();
 	var right = Vector3.UP.cross(forward)
 	self.transform.basis.x = right
@@ -198,7 +209,7 @@ func _throw_sickle(bounce: bool):
 
 	if _sickle == null:
 		_sickle = sickle.instance()
-		get_tree().root.add_child(_sickle)
+		get_tree().current_scene.add_child(_sickle)
 		bounce = false
 
 	if not bounce:
@@ -233,12 +244,15 @@ func _throw_sickle(bounce: bool):
 
 func _take_damage():
 	_play_sound(_sound_damange)
-	_game.take_damage()
+	var dead = _game.take_damage()
 	var particles = _blood_particles.duplicate(DUPLICATE_USE_INSTANCING)
 	self.add_child(particles)
 	particles.emitting = true
 	yield(get_tree().create_timer(0.2), "timeout")
 	particles.queue_free()
+	if dead and not _dead:
+		_dead = true
+		_animation_player.play("die")
 
 
 func _sickle_has_critical_velocity(velocity: float) -> bool:

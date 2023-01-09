@@ -1,36 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://prefabs/player/player.gd" type="Script" id=1]
-[ext_resource path="res://prefabs/sickle/sickle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://prefabs/beat_indicator/beat_indicator.tscn" type="PackedScene" id=3]
-[ext_resource path="res://prefabs/player/hat.material" type="Material" id=5]
-[ext_resource path="res://prefabs/player/arms.tres" type="Material" id=6]
-[ext_resource path="res://prefabs/player/body.material" type="Material" id=7]
-
-[sub_resource type="CapsuleShape" id=1]
-
-[sub_resource type="CylinderShape" id=5]
-height = 4.168
-radius = 2.355
-
-[sub_resource type="SpatialMaterial" id=6]
-params_diffuse_mode = 4
-params_specular_mode = 4
-params_billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-albedo_color = Color( 1, 0, 0, 1 )
-
-[sub_resource type="ParticlesMaterial" id=9]
-emission_shape = 1
-emission_sphere_radius = 1.0
-direction = Vector3( 0, 1, 0 )
-gravity = Vector3( 0, -20, 0 )
-initial_velocity = 3.0
-scale = 0.1
-
-[sub_resource type="QuadMesh" id=8]
+[ext_resource path="res://prefabs/player/eggman.glb" type="PackedScene" id=1]
+[ext_resource path="res://prefabs/player/arms.tres" type="Material" id=2]
+[ext_resource path="res://prefabs/player/hat.material" type="Material" id=3]
+[ext_resource path="res://prefabs/player/body.material" type="Material" id=4]
 
 [sub_resource type="ArrayMesh" id=11]
 resource_name = "eggman_hat"
@@ -41,7 +14,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 2194711,
 "index_count": 5424,
-"material": ExtResource( 5 ),
+"material": ExtResource( 3 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 3067
@@ -56,7 +29,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 2194711,
 "index_count": 3360,
-"material": ExtResource( 7 ),
+"material": ExtResource( 4 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 670
@@ -90,234 +63,29 @@ surfaces/0 = {
 "vertex_count": 119
 }
 
-[sub_resource type="Animation" id=12]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("eggman/Spatial/right_arm:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.885374, 0.848383, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("eggman/Spatial/right_arm:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, -22.3575 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("eggman/Spatial/left_arm:translation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0.942658, 0.848383, 0 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("eggman/Spatial/left_arm:rotation_degrees")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, -180, -22.3575 ) ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("eggman:rotation_degrees")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("eggman:translation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
+[node name="eggman" instance=ExtResource( 1 )]
 
-[sub_resource type="Animation" id=13]
-resource_name = "die"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("eggman:rotation_degrees")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.396316 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 79.785, 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("eggman:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.396316 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 1.11673, -1.11428 ) ]
-}
-
-[sub_resource type="Animation" id=10]
-resource_name = "hit"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("eggman/Spatial/right_arm:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.0291434, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( -0.885374, 0.848383, 0 ), Vector3( -0.885374, 0.987809, 0.439326 ), Vector3( -0.885374, 0.848383, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("eggman/Spatial/right_arm:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.0291434, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, -22.3575 ), Vector3( -24.333, -1.44985e-06, -22.3575 ), Vector3( 0, 0, -22.3575 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("eggman/Spatial/left_arm:translation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.0277556, 0.0291434, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0.942658, 0.848383, 0 ), Vector3( 0.942658, 0.848383, 0.21012 ), Vector3( 0.932029, 0.874179, 0.2654 ), Vector3( 0.942658, 0.848383, 0 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("eggman/Spatial/left_arm:rotation_degrees")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.0277556, 0.0291434, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 22.357 ), Vector3( -29.572, -13.4962, 25.9347 ), Vector3( -29.3338, -13.3875, 25.9059 ), Vector3( 0, 0, 22.357 ) ]
-}
-
-[node name="Player" type="KinematicBody"]
-script = ExtResource( 1 )
-sickle = ExtResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.5, 0 )
-shape = SubResource( 1 )
-
-[node name="Socket" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.880403, 1.61617, -0.609905 )
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-unit_size = 20.0
-
-[node name="Area" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.86372, 0 )
-collision_layer = 2
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.140208, -4.58889e-08 )
-shape = SubResource( 5 )
-
-[node name="Blood" type="Particles" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.02353, 0 )
-material_override = SubResource( 6 )
-cast_shadow = 0
-emitting = false
-amount = 16
-one_shot = true
-explosiveness = 1.0
-randomness = 0.31
-visibility_aabb = AABB( -1.84938, -0.97812, -1.8182, 3.69875, 3.18378, 3.6364 )
-process_material = SubResource( 9 )
-draw_pass_1 = SubResource( 8 )
-
-[node name="eggman" type="Spatial" parent="."]
-
-[node name="Spatial" type="Spatial" parent="eggman"]
+[node name="Spatial" type="Spatial" parent="." index="0"]
 transform = Transform( -1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, 0, 0 )
 
-[node name="hat" type="MeshInstance" parent="eggman/Spatial"]
+[node name="hat" type="MeshInstance" parent="Spatial" index="0"]
 transform = Transform( 0.73388, 0, 0, 0, 0.714578, 0.167209, 0, -0.167209, 0.714578, -0.00863876, -1.4322, 0.673932 )
 mesh = SubResource( 11 )
 skeleton = NodePath("../..")
 
-[node name="body" type="MeshInstance" parent="eggman/Spatial"]
+[node name="body" type="MeshInstance" parent="Spatial" index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
 
-[node name="left_arm" type="MeshInstance" parent="eggman/Spatial"]
-transform = Transform( 0.097083, 0.0832008, -1.37909e-08, 0.0399305, -0.202286, 0, 8.48727e-09, 7.27364e-09, 0.15775, 0.942658, 0.848383, 0 )
+[node name="left_arm" type="MeshInstance" parent="Spatial" index="2"]
+transform = Transform( 0.097083, 0.0832009, 0, 0.0399305, -0.202286, 0, 0, 0, 0.15775, 0.942658, 0.848383, 0 )
 mesh = SubResource( 3 )
 skeleton = NodePath("../..")
-material/0 = ExtResource( 6 )
+material/0 = ExtResource( 2 )
 
-[node name="right_arm" type="MeshInstance" parent="eggman/Spatial"]
-transform = Transform( -0.097083, -0.0832008, 0, 0.0399305, -0.202286, 0, 0, 0, -0.15775, -0.885374, 0.848383, 0 )
+[node name="right_arm" type="MeshInstance" parent="Spatial" index="3"]
+transform = Transform( -0.097083, -0.0832009, 0, 0.0399305, -0.202286, 0, 0, 0, -0.15775, -0.885374, 0.848383, 0 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
-material/0 = ExtResource( 6 )
-
-[node name="Hat" type="Spatial" parent="eggman"]
-transform = Transform( -1, 4.61646e-09, -1.50925e-07, 0, 0.999533, 0.0305734, 1.50996e-07, 0.0305734, -0.999533, 0.0310732, 3.32187, 0.019945 )
-
-[node name="BeatIndicator" parent="eggman/Hat" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 0.974075, 0.226226, 0, -0.226226, 0.974075, 0, 0.101661, -0.250066 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 12 )
-anims/die = SubResource( 13 )
-anims/hit = SubResource( 10 )
-
-[connection signal="body_entered" from="Area" to="." method="_on_sickle_entered"]
-[connection signal="body_exited" from="Area" to="." method="_on_sickle_exited"]
+material/0 = ExtResource( 2 )

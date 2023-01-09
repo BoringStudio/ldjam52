@@ -597,3 +597,48 @@ margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
 rect_pivot_offset = Vector2( 0.5, 0.5 )
 custom_styles/panel = SubResource( 13 )
+
+[node name="FinalScreen" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CenterContainer" type="CenterContainer" parent="FinalScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FinalScreen/CenterContainer"]
+margin_left = 315.0
+margin_top = 201.0
+margin_right = 708.0
+margin_bottom = 398.0
+
+[node name="Result" type="Label" parent="FinalScreen/CenterContainer/VBoxContainer"]
+margin_right = 393.0
+margin_bottom = 63.0
+rect_min_size = Vector2( 122, 63 )
+custom_fonts/font = SubResource( 6 )
+text = "Congrats"
+align = 1
+valign = 1
+
+[node name="Score" type="Label" parent="FinalScreen/CenterContainer/VBoxContainer"]
+margin_top = 67.0
+margin_right = 393.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 122, 63 )
+custom_colors/font_color = Color( 0.917647, 0.741176, 0.466667, 1 )
+custom_fonts/font = SubResource( 6 )
+text = "score"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="FinalScreen/CenterContainer/VBoxContainer"]
+margin_top = 134.0
+margin_right = 393.0
+margin_bottom = 197.0
+rect_min_size = Vector2( 122, 63 )
+custom_fonts/font = SubResource( 6 )
+text = "Press 'R' to retry"
+align = 1
+valign = 1

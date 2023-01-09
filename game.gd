@@ -1,6 +1,12 @@
 extends Spatial
 class_name Game
 
+enum State {
+	Playing,
+	Win,
+	Dead,
+}
+
 export(PackedScene) var wheat: PackedScene
 export(int) var width = 20
 export(int) var height = 20
@@ -24,6 +30,7 @@ var _min_score: float = width * height * score_per_wheat
 var _health: int = health
 var _required_wheat: float = 0
 var _gathared_wheat: int = 0
+var _state: int = State.Playing
 
 onready var _field = $Field
 onready var _music = $AudioStreamPlayer
@@ -33,6 +40,12 @@ onready var _score_label = $GUI/Up/VBoxContainer/Score
 onready var _ui_animation_player: AnimationPlayer = $GUI/Up/VBoxContainer/AnimationPlayer
 onready var _health_bar = $GUI/Bottom/HBoxContainer
 onready var _heart_icon = $GUI/Bottom/HBoxContainer/Heart
+
+onready var _gui_root = $GUI
+onready var _final_screen_root = $FinalScreen
+onready var _final_screen_title = $FinalScreen/CenterContainer/VBoxContainer/Result
+onready var _final_screen_score = $FinalScreen/CenterContainer/VBoxContainer/Score
+
 
 func _ready():
 	var top_left = Vector3(-width * cell_size / 2.0, 0, -height * cell_size / 2.0)
@@ -53,6 +66,16 @@ func _ready():
 	for _i in range(1, _health):
 		var heart = _heart_icon.duplicate(DUPLICATE_USE_INSTANCING)
 		_health_bar.add_child(heart)
+
+
+func _input(event):
+	if event.is_action("retry") and _state != State.Playing:
+		var scene = get_tree().current_scene
+		for n in scene.get_children():
+			scene.remove_child(n)
+			n.queue_free()
+
+		var _res = get_tree().reload_current_scene()
 
 
 func delay_action(shift: float = 0.0, period_div: float = 1.0):
@@ -78,12 +101,16 @@ func add_rhythm_bounce_score():
 	_add_score(score_per_rhythm_bounce, "add_rhythm_bounce")
 
 
-func take_damage():
-	if _health > 0:
+func take_damage() -> bool:
+	if _health > 1:
 		_health -= 1
 		var last_heart = _health_bar.get_child(0)
 		if is_instance_valid(last_heart):
 			last_heart.queue_free()
+		return false
+	else:
+		_finish_game(State.Dead)
+		return true
 
 
 func _add_score(score_to_add: int, animation: String):
@@ -91,6 +118,21 @@ func _add_score(score_to_add: int, animation: String):
 	_progress_bar.value = _gathared_wheat * 100.0 / _required_wheat
 	_score_label.text = "%d" % _score
 	_ui_animation_player.play(animation)
+	if _gathared_wheat >= _required_wheat:
+		_finish_game(State.Win)
+
+
+func _finish_game(state: int):
+	if _state != State.Playing:
+		return
+	_state = state
+	_gui_root.visible = false
+	_final_screen_root.visible = true
+	if state == State.Dead:
+		_final_screen_title.text = "The sickle is not a toy!"
+	else:
+		_final_screen_title.text = "Nice!"
+	_final_screen_score.text = "Score: %d (%d%%)" % [_score, _progress_bar.value]
 
 
 func _physics_process(_delta):
